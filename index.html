@@ -1,63 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head<link rel="stylesheet" href="style.css" />
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MRAVI - Copywriter & Brand Strategist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ravi Dhakad - Your Creative Partner</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <header>
-    <h1>Messaging Made Human</h1>
-    <p>Connecting brands with the people they love.</p>
+    <div class="container">
+      <h1>Ravi Dhakad</h1>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
   </header>
 
-  <section id="about">
-    <h2>About MRAVI</h2>
-    <p>I'm MRAVI, your partner for all things copy. Based in [Your Location], serving business owners worldwide.</p>
+  <section class="hero">
+    <div class="container">
+      <h2>Welcome! I'm Ravi Dhakad</h2>
+      <p>Your partner for creative and digital solutions.</p>
+      <a href="#contact" class="btn">Get in Touch</a>
+    </div>
   </section>
 
-  <section id="services">
-    <h2>Services</h2>
-    <ul>
-      <li>Messaging Strategy</li>
-      <li>Website Copy</li>
-      <li>Email Marketing</li>
-      <li>Social Media Content</li>
-    </ul>
+  <section id="about" class="about">
+    <div class="container">
+      <h2>About Me</h2>
+      <p>I’m a passionate creator based in India. I specialize in web design, digital marketing, and content creation to help you grow your brand.</p>
+    </div>
   </section>
 
-  <section id="testimonials">
-    <h2>Testimonials</h2>
-    <blockquote>
-      <p>"MRAVI translates your thoughts into beautiful words."</p>
-      <cite>- Happy Client</cite>
-    </blockquote>
+  <section id="services" class="services">
+    <div class="container">
+      <h2>Services</h2>
+      <ul>
+        <li>Web Design & Development</li>
+        <li>Copywriting & Content Strategy</li>
+        <li>Social Media Marketing</li>
+        <li>SEO & Digital Advertising</li>
+      </ul>
+    </div>
   </section>
 
-  <section id="portfolio">
-    <h2>Portfolio</h2>
-    <p>Coming Soon...</p>
-  </section>
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2>Contact Me</h2>
+      <form>
+        <label for="name">Name:</label>
+        <input id="name" type="text" placeholder="Your Name" required />
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <form>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required />
+        <label for="email">Email:</label>
+        <input id="email" type="email" placeholder="Your Email" required />
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required />
+        <label for="message">Message:</label>
+        <textarea id="message" placeholder="Your Message" required></textarea>
 
-      <label for="message">Message:</label>
-      <textarea id="message" name="message" required></textarea>
-
-      <button type="submit">Send Message</button>
-    </form>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
   </section>
 
   <footer>
-    <p>&copy; 2025 MRAVI. All rights reserved.</p>
+    <div class="container">
+      <p>&copy; 2025 Ravi Dhakad. All rights reserved.</p>
+    </div>
   </footer>
+
 </body>
 </html>
