@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mravi's Portfolio</title>
+<style>
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    color: #222;
+    line-height: 1.6;
+  }
+  header {
+    background: #3f51b5;
+    color: white;
+    padding: 70px 20px;
+    text-align: center;
+  }
+  header h1 {
+    font-size: 3.5rem;
+    letter-spacing: 3px;
+  }
+  header p {
+    margin-top: 12px;
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+  main {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  section {
+    margin-bottom: 60px;
+  }
+  section h2 {
+    margin-bottom: 22px;
+    font-size: 2.3rem;
+    border-bottom: 4px solid #3f51b5;
+    display: inline-block;
+    padding-bottom: 8px;
+  }
+  #about p {
+    font-size: 1.2rem;
+    color: #444;
+    max-width: 700px;
+    margin: auto;
+  }
+  .skill {
+    margin-bottom: 18px;
+  }
+  .skill-name {
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .skill-bar {
+    background: #ddd;
+    border-radius: 25px;
+    overflow: hidden;
+    max-width: 700px;
+    margin: auto;
+  }
+  .skill-level {
+    background: #3f51b5;
+    height: 16px;
+    width: 0;
+    border-radius: 25px;
+    transition: width 1.2s ease-in-out;
+  }
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 24px;
+  }
+  .project-card {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transition: transform 0.3s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-6px);
+  }
+  .project-title {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    color: #3f51b5;
+    font-weight: 700;
+  }
+  .project-desc {
+    font-size: 1rem;
+    color: #555;
+  }
+  #contact form {
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  #contact input, #contact textarea {
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font-size: 1.1rem;
+  }
+  #contact button {
+    background: #3f51b5;
+    color: white;
+    padding: 14px;
+    font-size: 1.15rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+  #contact button:hover {
+    background: #2c387e;
+  }
+  footer {
+    background: #2c387e;
+    color: white;
+    text-align: center;
+    padding: 24px 10px;
+    font-size: 1rem;
+  }
+  footer a {
+    color: #8c9eff;
+    margin: 0 14px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  footer a:hover {
+    text-decoration: underline;
+  }
+  @media(max-width: 600px){
+    header h1 {
+      font-size: 2.5rem;
+    }
+    section h2 {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MRAVI</h1>
+  <p>Web Developer | Designer | Tech Enthusiast</p>
+</header>
+
+<main>
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hello! I'm Mravi, passionate about building beautiful and functional websites. I enjoy crafting smooth user experiences and solving complex problems with clean code.</p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skill">
+      <div class="skill-name">HTML & CSS</div>
+      <div class="skill-bar"><div class="skill-level" style="width: 92%;"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-name">JavaScript</div>
+      <div class="skill-bar"><div class="skill-level" style="width: 88%;"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-name">React</div>
+      <div class="skill-bar"><div class="skill-level" style="width: 75%;"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-name">Node.js</div>
+      <div class="skill-bar"><div class="skill-level" style="width: 70%;"></div></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="project-card">
+        <div class="project-title">Personal Portfolio</div>
+        <div class="project-desc">My own portfolio site built with HTML, CSS and JavaScript.</div>
+      </div>
+      <div class="project-card">
+        <div class="project-title">Task Manager App</div>
+        <div class="project-desc">A React app for managing daily tasks with localStorage support.</div>
+      </div>
+      <div class="project-card">
+        <div class="project-title">Blog Website</div>
+        <div class="project-desc">A blog platform using Node.js and Express.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <form onsubmit="submitForm(event)">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 MRAVI | 
+  <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a> | 
+  <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+</footer>
+
+<script>
+  // Animate skill bars on scroll
+  window.addEventListener('scroll', () => {
+    const skillsSection = document.getElementById('skills');
+    const rect = skillsSection.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      document.querySelectorAll('.skill-level').forEach(el => {
+        el.style.width = el.style.width;
+      });
+    }
+  });
+
+  function submitForm(e) {
+    e.preventDefault();
+    alert('Thanks for reaching out, I will get back to you soon!');
+    e.target.reset();
+  }
+</script>
+
+</body>
+</html>
