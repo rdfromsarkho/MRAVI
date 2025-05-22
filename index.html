@@ -1,92 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
-<head<link rel="stylesheet" href="style.css" />
-  <meta charset="UTF-8" /<style>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unlock Yourself - Online Book Purchase</title>
+<style>
   body {
-    background-color: skyblue;
+    font-family: Arial, sans-serif;
+    background: #f4f7f8;
+    margin: 0; padding: 0;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 400px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  h1 {
+    margin-bottom: 10px;
+  }
+  p {
+    color: #555;
+  }
+  button {
+    background: #27ae60;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  button:hover {
+    background: #219150;
+  }
+  .download-link {
+    margin-top: 20px;
+    display: none;
+    font-weight: bold;
+    color: #2c3e50;
   }
 </style>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ravi Dhakad - Your Creative Partner</<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ravi Dhakad - Your Creative Partner</title>
-
-  <style>
-    /* Yahan pura CSS code paste karo */
-    body {
-      background: #e0f7fa;
-      color: #01579b;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      /* baki CSS... */
-    }
-    /* baki CSS yahan likho... */
-  </style>
-</head>  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <header>
-    <div class="container">
-      <h1>Ravi Dhakad</h1>
-      <nav>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+<div class="container">
+  <img src="ebook-cover.jpg" alt="Unlock Yourself Book Cover" />
+  <h1>Unlock Yourself</h1>
+  <p>लेखक: Mravi</p>
+  <p>कीमत: ₹299</p>
+  <button id="buyBtn">खरीदें</button>
+  <div class="download-link" id="downloadLink">
+    धन्यवाद! आपकी खरीदारी सफल रही।  
+    <br />
+    <a href="ebook.pdf" download>यहाँ क्लिक करें अपनी किताब डाउनलोड करने के लिए।</a>
+  </div>
+</div>
 
-  <section class="hero">
-    <div class="container">
-      <h2>Welcome! I'm Ravi Dhakad</h2>
-      <p>Your partner for creative and digital solutions.</p>
-      <a href="#contact" class="btn">Get in Touch</a>
-    </div>
-  </section>
+<!-- Razorpay Checkout Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  const buyBtn = document.getElementById('buyBtn');
+  const downloadLink = document.getElementById('downloadLink');
 
-  <section id="about" class="about">
-    <div class="container">
-      <h2>About Me</h2>
-      <p>I’m a passionate creator based in India. I specialize in web design, digital marketing, and content creation to help you grow your brand.</p>
-    </div>
-  </section>
-
-  <section id="services" class="services">
-    <div class="container">
-      <h2>Services</h2>
-      <ul>
-        <li>Web Design & Development</li>
-        <li>Copywriting & Content Strategy</li>
-        <li>Social Media Marketing</li>
-        <li>SEO & Digital Advertising</li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="contact" class="contact">
-    <div class="container">
-      <h2>Contact Me</h2>
-      <form>
-        <label for="name">Name:</label>
-        <input id="name" type="text" placeholder="Your Name" required />
-
-        <label for="email">Email:</label>
-        <input id="email" type="email" placeholder="Your Email" required />
-
-        <label for="message">Message:</label>
-        <textarea id="message" placeholder="Your Message" required></textarea>
-
-        <button type="submit">Send Message</button>
-      </form>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 Ravi Dhakad. All rights reserved.</p>
-    </div>
-  </footer>
+  buyBtn.addEventListener('click', () => {
+    var options = {
+      "key": "YOUR_RAZORPAY_KEY", // Replace with your Razorpay API key
+      "amount": 29900, // Price in paise (₹299)
+      "currency": "INR",
+      "name": "Unlock Yourself",
+      "description": "Self-help eBook by Mravi",
+      "handler": function (response){
+        // Payment successful
+        buyBtn.style.display = 'none';
+        downloadLink.style.display = 'block';
+      },
+      "prefill": {
+        "name": "",
+        "email": ""
+      },
+      "theme": {
+        "color": "#27ae60"
+      }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+  });
+</script>
 
 </body>
 </html>
