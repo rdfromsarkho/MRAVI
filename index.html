@@ -1,101 +1,61 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Unlock Yourself - Online Book Purchase</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f4f7f8;
-    margin: 0; padding: 0;
-    display: flex; justify-content: center; align-items: center;
-    min-height: 100vh;
-  }
-  .container {
-    background: white;
-    padding: 25px;
-    border-radius: 8px;
-    max-width: 400px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.1);
-    text-align: center;
-  }
-  img {
-    max-width: 100%;
-    border-radius: 8px;
-  }
-  h1 {
-    margin-bottom: 10px;
-  }
-  p {
-    color: #555;
-  }
-  button {
-    background: #27ae60;
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
-    margin-top: 20px;
-  }
-  button:hover {
-    background: #219150;
-  }
-  .download-link {
-    margin-top: 20px;
-    display: none;
-    font-weight: bold;
-    color: #2c3e50;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>eBook Library</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header>
+    <h1>eBook Library</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
 
-<div class="container">
-  <img src="ebook-cover.jpg" alt="Unlock Yourself Book Cover" />
-  <h1>Unlock Yourself</h1>
-  <p>लेखक: Mravi</p>
-  <p>कीमत: ₹299</p>
-  <button id="buyBtn">खरीदें</button>
-  <div class="download-link" id="downloadLink">
-    धन्यवाद! आपकी खरीदारी सफल रही।  
-    <br />
-    <a href="ebook.pdf" download>यहाँ क्लिक करें अपनी किताब डाउनलोड करने के लिए।</a>
-  </div>
-</div>
+  <main>
+    <section class="filters">
+      <label for="class">Class:</label>
+      <select id="class">
+        <option>1st</option>
+        <option>2nd</option>
+        <option>3rd</option>
+        <!-- Add more classes as needed -->
+      </select>
 
-<!-- Razorpay Checkout Script -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-  const buyBtn = document.getElementById('buyBtn');
-  const downloadLink = document.getElementById('downloadLink');
+      <label for="medium">Medium:</label>
+      <select id="medium">
+        <option>English</option>
+        <option>Marathi</option>
+        <option>Hindi</option>
+        <!-- Add more mediums as needed -->
+      </select>
+    </section>
 
-  buyBtn.addEventListener('click', () => {
-    var options = {
-      "key": "YOUR_RAZORPAY_KEY", // Replace with your Razorpay API key
-      "amount": 29900, // Price in paise (₹299)
-      "currency": "INR",
-      "name": "Unlock Yourself",
-      "description": "Self-help eBook by Mravi",
-      "handler": function (response){
-        // Payment successful
-        buyBtn.style.display = 'none';
-        downloadLink.style.display = 'block';
-      },
-      "prefill": {
-        "name": "",
-        "email": ""
-      },
-      "theme": {
-        "color": "#27ae60"
-      }
-    };
-    var rzp1 = new Razorpay(options);
-    rzp1.open();
-  });
-</script>
+    <section class="book-list">
+      <article class="book">
+        <img src="book1.jpg" alt="Book 1 Cover" />
+        <h2>Mathematics - Class 1</h2>
+        <p>Medium: English</p>
+        <a href="books/math_class1_en.pdf" download>Download PDF</a>
+      </article>
 
+      <article class="book">
+        <img src="book2.jpg" alt="Book 2 Cover" />
+        <h2>Science - Class 2</h2>
+        <p>Medium: Marathi</p>
+        <a href="books/science_class2_mr.pdf" download>Download PDF</a>
+      </article>
+
+      <!-- Add more book entries as needed -->
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 eBook Library. All rights reserved.</p>
+  </footer>
 </body>
 </html>
