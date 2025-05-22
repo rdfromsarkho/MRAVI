@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookStore - Online Book Selling</title>
+    <title>BookStore[MRAVI] - Online Book Selling</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -22,6 +23,9 @@
             color: white;
             padding: 1rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         nav {
@@ -35,25 +39,45 @@
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
+            color: #f39c12;
         }
         
         .nav-links {
             display: flex;
             list-style: none;
+            align-items: center;
         }
         
         .nav-links li {
             margin-left: 1.5rem;
+            position: relative;
         }
         
         .nav-links a {
             color: white;
             text-decoration: none;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
         }
         
         .nav-links a:hover {
             color: #f39c12;
+        }
+        
+        .nav-links i {
+            margin-right: 5px;
+        }
+        
+        .cart-count {
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            position: absolute;
+            top: -8px;
+            right: -8px;
         }
         
         .hero {
@@ -73,12 +97,14 @@
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
         
         .hero p {
             font-size: 1.2rem;
             margin-bottom: 2rem;
             max-width: 700px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
         
         .btn {
@@ -90,11 +116,14 @@
             border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            cursor: pointer;
         }
         
         .btn:hover {
             background-color: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .container {
@@ -108,6 +137,17 @@
             margin-bottom: 2rem;
             font-size: 2rem;
             color: #2c3e50;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #f39c12;
+            margin: 10px auto;
+            border-radius: 2px;
         }
         
         .books {
@@ -121,22 +161,42 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            transition: all 0.3s;
+            position: relative;
         }
         
         .book-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .book-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
         }
         
         .book-img {
             height: 300px;
             overflow: hidden;
+            position: relative;
         }
         
         .book-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .book-card:hover .book-img img {
+            transform: scale(1.05);
         }
         
         .book-info {
@@ -146,17 +206,81 @@
         .book-title {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
+            color: #2c3e50;
         }
         
         .book-author {
             color: #7f8c8d;
             margin-bottom: 1rem;
+            font-size: 0.9rem;
         }
         
         .book-price {
             font-weight: bold;
             font-size: 1.3rem;
             color: #e74c3c;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .book-rating {
+            color: #f39c12;
+            font-size: 0.9rem;
+        }
+        
+        .search-bar {
+            display: flex;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .search-bar button {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-bar button:hover {
+            background-color: #e67e22;
+        }
+        
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .category-btn {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
         }
         
         footer {
@@ -167,6 +291,67 @@
             margin-top: 3rem;
         }
         
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1rem;
+            padding: 0 1rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #f39c12;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #f39c12;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: #f39c12;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #34495e;
+        }
+        
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -175,21 +360,69 @@
             .hero h1 {
                 font-size: 2rem;
             }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+        
+        /* Mobile menu button */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: #2c3e50;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                transition: left 0.3s;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 1rem 0;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">BookStore[MRAVI]
-            </div>
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Books</a></li>
-                <li><a href="#">Categories</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Login</a></li>
+            <div class="logo">BookStore<span style="color: white;">[MRAVI]</span></div>
+            <button class="menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-book"></i> Books</a></li>
+                <li><a href="#"><i class="fas fa-list"></i> Categories</a></li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li>
+                    <a href="#"><i class="fas fa-user"></i> Login</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
+                </li>
             </ul>
         </nav>
     </header>
@@ -197,77 +430,177 @@
     <section class="hero">
         <h1>Discover Your Next Favorite Book</h1>
         <p>Browse our extensive collection of books across all genres. From bestsellers to rare finds, we have something for every reader.</p>
-        <a href="#" class="btn">Shop Now</a>
+        <a href="#" class="btn"><i class="fas fa-shopping-bag"></i> Shop Now</a>
     </section>
     
     <div class="container">
+        <div class="search-bar">
+            <input type="text" placeholder="Search for books, authors, categories...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="categories">
+            <button class="category-btn active">All</button>
+            <button class="category-btn">Fiction</button>
+            <button class="category-btn">Non-Fiction</button>
+            <button class="category-btn">Biography</button>
+            <button class="category-btn">Science</button>
+            <button class="category-btn">Technology</button>
+        </div>
+        
         <h2 class="section-title">Featured Books</h2>
         <div class="books">
             <div class="book-card">
+                <div class="book-badge">Bestseller</div>
                 <div class="book-img">
                     <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f" alt="Book Cover">
                 </div>
                 <div class="book-info">
                     <h3 class="book-title">The Creative Habit</h3>
                     <p class="book-author">By Twyla Tharp</p>
-                    <p class="book-price">$12.99</p>
-                    <button class="btn" style="width: 100%; margin-top: 1rem;">Add to Cart</button>
+                    <div class="book-price">
+                        <span>$12.99</span>
+                        <span class="book-rating"><i class="fas fa-star"></i> 4.5</span>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;"><i class="fas fa-cart-plus"></i> Add to Cart</button>
                 </div>
             </div>
             
             <div class="book-card">
+                <div class="book-badge">New</div>
                 <div class="book-img">
                     <img src="https://images.unsplash.com/photo-1589998059171-988d887df646" alt="Book Cover">
                 </div>
                 <div class="book-info">
                     <h3 class="book-title">Atomic Habits</h3>
                     <p class="book-author">By James Clear</p>
-                    <p class="book-price">$14.99</p>
-                    <button class="btn" style="width: 100%; margin-top: 1rem;">Add to Cart</button>
+                    <div class="book-price">
+                        <span>$14.99</span>
+                        <span class="book-rating"><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;"><i class="fas fa-cart-plus"></i> Add to Cart</button>
                 </div>
             </div>
             
             <div class="book-card">
+                <div class="book-badge">Classic</div>
                 <div class="book-img">
                     <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19" alt="Book Cover">
                 </div>
                 <div class="book-info">
                     <h3 class="book-title">The Alchemist</h3>
                     <p class="book-author">By Paulo Coelho</p>
-                    <p class="book-price">$10.99</p>
-                    <button class="btn" style="width: 100%; margin-top: 1rem;">Add to Cart</button>
+                    <div class="book-price">
+                        <span>$10.99</span>
+                        <span class="book-rating"><i class="fas fa-star"></i> 4.7</span>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;"><i class="fas fa-cart-plus"></i> Add to Cart</button>
                 </div>
             </div>
             
             <div class="book-card">
                 <div class="book-img">
-                    <img src="https://www.facebook.com/share/14hqqrKoe4/?mibextid=wwXIfr">
+                    <img src="https://images.unsplash.com/photo-1531346878377-a5be20888e57" alt="Book Cover">
                 </div>
                 <div class="book-info">
                     <h3 class="book-title">Deep Work</h3>
                     <p class="book-author">By Cal Newport</p>
-                    <p class="book-price">$13.99</p>
-                    <button class="btn" style="width: 100%; margin-top: 1rem;">Add to Cart</button>
+                    <div class="book-price">
+                        <span>$13.99</span>
+                        <span class="book-rating"><i class="fas fa-star"></i> 4.6</span>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;"><i class="fas fa-cart-plus"></i> Add to Cart</button>
                 </div>
             </div>
         </div>
     </div>
     
     <footer>
-        <p>&copy; 2023 BookStore. All rights reserved.</p>
-        <p style="margin-top: 1rem;">Contact: info@bookstore.
-            com | Phone: +919977692271</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>BookStore[MRAVI] is your one-stop shop for all your reading needs. We offer a wide range of books across various genres at competitive prices.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Books</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Book Street, Reading City</li>
+                    <li><i class="fas fa-phone"></i> +91 9977692271</li>
+                    <li><i class="fas fa-envelope"></i> info@bookstore.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 BookStore[MRAVI]. All rights reserved.</p>
+        </div>
     </footer>
     
     <script>
         // Simple JavaScript for demonstration
         document.querySelectorAll('.btn').forEach(button => {
             button.addEventListener('click', function(e) {
-                if (e.target.textContent === 'Add to Cart') {
-                    alert('Book added to cart!');
-                    // In a real app, you would add to cart functionality here
+                if (e.target.textContent.includes('Add to Cart')) {
+                    const cartCount = document.querySelector('.cart-count');
+                    let count = parseInt(cartCount.textContent);
+                    cartCount.textContent = count + 1;
+                    
+                    // Get book title
+                    const bookTitle = this.closest('.book-card').querySelector('.book-title').textContent;
+                    alert(`"${bookTitle}" added to cart!`);
                 }
             });
+        });
+        
+        // Category filter
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelector('.category-btn.active').classList.remove('active');
+                this.classList.add('active');
+                // In a real app, you would filter books here
+            });
+        });
+        
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Search functionality
+        const searchInput = document.querySelector('.search-bar input');
+        const searchBtn = document.querySelector('.search-bar button');
+        
+        searchBtn.addEventListener('click', function() {
+            if (searchInput.value.trim() !== '') {
+                alert(`Searching for: "${searchInput.value}"`);
+                // In a real app, you would perform search here
+            }
+        });
+        
+        // Allow search on Enter key
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                alert(`Searching for: "${this.value}"`);
+                // In a real app, you would perform search here
+            }
         });
     </script>
 </body>
