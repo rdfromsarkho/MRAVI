@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SarkhoBook</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-    header { background: #4267B2; color: white; padding: 1rem; text-align: center; }
+    body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+    header { background: #1877f2; color: white; padding: 1rem; text-align: center; }
     main { padding: 1rem; max-width: 600px; margin: auto; }
+    .hidden { display: none; }
     .post { background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .post-time { color: gray; font-size: 0.8rem; }
-    textarea { width: 100%; height: 80px; margin-bottom: 0.5rem; }
-    button { padding: 0.5rem 1rem; background: #4267B2; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    input, textarea { width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; }
+    button { padding: 0.5rem 1rem; background: #1877f2; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    img { max-width: 100%; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
@@ -20,48 +22,105 @@
     <p>Connect without limits</p>
   </header>
   <main>
-    <h2>Create Post</h2>
-    <textarea id="postContent" placeholder="What's on your mind?"></textarea>
-    <br>
-    <button onclick="addPost()">Post</button>
+    <div id="authSection">
+      <h2>Login / Signup</h2>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="signup()">Signup</button>
+      <button onclick="login()">Login</button>
+    </div>
 
-    <h2>Feed</h2>
-    <div id="feed"></div>
+    <div id="appSection" class="hidden">
+      <h2>Create Post</h2>
+      <textarea id="postContent" placeholder="What's on your mind?"></textarea>
+      <input type="file" id="postImage" accept="image/*" />
+      <button onclick="addPost()">Post</button>
+      <button onclick="logout()">Logout</button>
+
+      <h2>Feed</h2>
+      <div id="feed"></div>
+    </div>
   </main>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
   <script>
-    // ✅ Replace this with your Firebase project config:
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyCxZ-6YOgcxPCgFaLqgrx_wfKm0E4I6zZc",
+      authDomain: "sarkhobook.firebaseapp.com",
+      databaseURL: "https://sarkhobook-default-rtdb.firebaseio.com",
+      projectId: "sarkhobook",
+      storageBucket: "sarkhobook.appspot.com",
+      messagingSenderId: "330841332335",
+      appId: "1:330841332335:web:0017e3c3df2b31f496ac33"
     };
 
-    // ✅ Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.database();
+    const storage = firebase.storage();
 
-    // ✅ Add a new post
-    function addPost() {
-      const content = document.getElementById("postContent").value.trim();
-      if (content) {
-        const post = {
-          text: content,
-          time: new Date().toLocaleString()
-        };
-        db.ref("posts").push(post);
-        document.getElementById("postContent").value = "";
-      }
+    function signup() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      auth.createUserWithEmailAndPassword(email, password).catch(alert);
     }
 
-    // ✅ Load all posts
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      auth.signInWithEmailAndPassword(email, password).catch(alert);
+    }
+
+    function logout() {
+      auth.signOut();
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("authSection").classList.add("hidden");
+        document.getElementById("appSection").classList.remove("hidden");
+        loadPosts();
+      } else {
+        document.getElementById("authSection").classList.remove("hidden");
+        document.getElementById("appSection").classList.add("hidden");
+      }
+    });
+
+    function addPost() {
+      const content = document.getElementById("postContent").value.trim();
+      const file = document.getElementById("postImage").files[0];
+
+      if (!content && !file) return;
+
+      if (file) {
+        const storageRef = storage.ref('images/' + Date.now() + '_' + file.name);
+        storageRef.put(file).then(snapshot => {
+          snapshot.ref.getDownloadURL().then(url => {
+            savePost(content, url);
+          });
+        });
+      } else {
+        savePost(content, "");
+      }
+
+      document.getElementById("postContent").value = "";
+      document.getElementById("postImage").value = "";
+    }
+
+    function savePost(text, imageUrl) {
+      const post = {
+        text: text,
+        image: imageUrl,
+        time: new Date().toLocaleString()
+      };
+      db.ref("posts").push(post);
+    }
+
     function loadPosts() {
       db.ref("posts").on("value", (snapshot) => {
         const feed = document.getElementById("feed");
@@ -71,14 +130,14 @@
           Object.values(data).reverse().forEach(post => {
             const div = document.createElement("div");
             div.className = "post";
-            div.innerHTML = `<p>${post.text}</p><div class='post-time'>${post.time}</div>`;
+            div.innerHTML = `<p>${post.text}</p>
+                             ${post.image ? `<img src="${post.image}" />` : ""}
+                             <div class='post-time'>${post.time}</div>`;
             feed.appendChild(div);
           });
         }
       });
     }
-
-    loadPosts();
   </script>
 </body>
 </html>
